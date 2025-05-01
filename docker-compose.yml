@@ -1,0 +1,47 @@
+version: '3.8'  # Aunque es obsoleto, lo mantenemos por compatibilidad
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: microservicios
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d microservicios"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  estudiante:
+    build: ./estudiante
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      FLASK_APP: app.py
+      FLASK_ENV: development
+      DB_HOST: db
+      DB_PORT: 5432
+
+  evaluacion:
+    build: ./evaluacion
+    ports:
+      - "5001:5001"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      FLASK_APP: app.py
+      FLASK_ENV: development
+      DB_HOST: db
+      DB_PORT: 5432
+
+volumes:
+  postgres_data:
