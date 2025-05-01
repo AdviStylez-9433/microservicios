@@ -10,7 +10,7 @@ Este proyecto implementa dos microservicios (`Estudiante` y `Evaluación`) conec
 ## Configuración
 1. Clona el repositorio:
    ```bash
-   git clone [URL_DEL_REPOSITORIO]
+   git clone https://github.com/AdviStylez-9433/microservicios.git
    cd microservicios-docker
 
 2. Configura las variables de entorno (opcional):
